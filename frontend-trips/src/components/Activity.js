@@ -11,8 +11,10 @@ import { Button, FormGroup, Input, Label } from "reactstrap";
 import Drawer from "./Modal";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useGetDestinationsQuery } from "../services/destination";
 const Activity = () => {
   const { data, loading, error, refetch } = useGetActivitiesQuery("");
+  const destinationData = useGetDestinationsQuery("");
   const [createActivity] = useCreateActivityMutation();
   const [updateActivity] = useUpdateActivityMutation();
   const [deleteActivity] = useDeleteActivityMutation();
@@ -21,6 +23,7 @@ const Activity = () => {
   const [activityForm, setActivityForm] = useState({
     name: "",
     description: "",
+    destination_id: null,
   });
 
   const onSubmit = async (e) => {
@@ -61,19 +64,24 @@ const Activity = () => {
         <div className="container py-5">
           <div className="mx-auto text-center mb-5" style={{ maxWidth: 900 }}>
             <h5 className="section-title px-3">Activity</h5>
-            <h1 className="mb-0">Popular Activity</h1>
+            <h1 className="mb-0">Popular Activities</h1>
           </div>
-          <div className="d-flex justify-content-end">
-            <Button
-              className="  btn btn-primary   rounded-pill"
-              color="primary"
-              onClick={() => setModal(true)}
-            >
-              <span className="text-white" style={{ width: 150 }}>
-                Add Activity
-              </span>
-            </Button>
-          </div>
+
+          {JSON.parse(localStorage.getItem("user"))?.email ===
+            "admin@example.com" && (
+            <div className="d-flex justify-content-end">
+              <Button
+                className="  btn btn-primary   rounded-pill"
+                color="primary"
+                onClick={() => setModal(true)}
+              >
+                <span className="text-white" style={{ width: 150 }}>
+                  Add Activity
+                </span>
+              </Button>
+            </div>
+          )}
+
           <div className="tab-class text-center">
             <ul className="nav nav-pills d-inline-flex justify-content-center mb-5">
               <li className="nav-item">
@@ -100,16 +108,19 @@ const Activity = () => {
                           alt=""
                         />
                         <div className="destination-overlay p-4">
-                          <Link
-                            onClick={() => {
-                              setActivityForm({ ...activity });
-                              setModal(true);
-                              setIsEdit(true);
-                            }}
-                            className="btn btn-primary text-white rounded-pill border py-2 px-3"
-                          >
-                            Edit
-                          </Link>
+                          {JSON.parse(localStorage.getItem("user"))?.email ===
+                            "admin@example.com" && (
+                            <Link
+                              onClick={() => {
+                                setActivityForm({ ...activity });
+                                setModal(true);
+                                setIsEdit(true);
+                              }}
+                              className="btn btn-primary text-white rounded-pill border py-2 px-3"
+                            >
+                              Edit
+                            </Link>
+                          )}
                           <h4 className="text-white mb-2 mt-3">
                             {activity.name}
                           </h4>
@@ -119,16 +130,19 @@ const Activity = () => {
                           </Link>
                         </div>
                         <div className="search-icon">
-                          <Link
-                            onClick={() => onTrashClick(activity.id)}
-                            data-lightbox="destination-1"
-                            className=""
-                          >
-                            <FaTrash
-                              style={{ width: "40px", height: "40px" }}
-                              className=" btn btn-white  text-danger"
-                            />
-                          </Link>
+                          {JSON.parse(localStorage.getItem("user"))?.email ===
+                            "admin@example.com" && (
+                            <Link
+                              onClick={() => onTrashClick(activity.id)}
+                              data-lightbox="destination-1"
+                              className=""
+                            >
+                              <FaTrash
+                                style={{ width: "40px", height: "40px" }}
+                                className=" btn btn-white  text-danger"
+                              />
+                            </Link>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -206,6 +220,27 @@ const Activity = () => {
               })
             }
           />
+        </FormGroup>
+        <FormGroup>
+          <Label for="destination">Destination</Label>
+          <Input
+            required
+            id="destination_id"
+            name="destination_id"
+            value={activityForm.destination_id}
+            type="select"
+            onChange={(e) =>
+              setActivityForm({
+                ...activityForm,
+                [e.target.name]: e.target.value,
+              })
+            }
+          >
+            <option value={-1}>Chose Destination</option>
+            {destinationData?.data?.map((destination) => (
+              <option value={destination.id}>{destination.name}</option>
+            ))}
+          </Input>
         </FormGroup>
       </Drawer>
     </>

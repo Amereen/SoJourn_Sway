@@ -27,6 +27,12 @@ class DestinationsController < ApplicationController
     end
   end
 
+  def get_associated_activities
+    @destination = Destination.find(params[:id])
+    @associeted_destinations = @destination.activities
+    render json: @associeted_destinations
+  end
+
   # DELETE /destinations/1
   def destroy
     @destination.destroy

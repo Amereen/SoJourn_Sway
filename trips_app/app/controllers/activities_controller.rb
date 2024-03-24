@@ -4,15 +4,16 @@ class ActivitiesController < ApplicationController
 
   # GET /activities
   def index
-    @activities = current_user.activities
+    @activities = Activity.all
     render json: @activities
   end
 
   # POST /activities
   def create
     @activity = current_user.activities.new(activity_params)
-
+  
     if @activity.save
+      ActivityDestination.create(activity_id: @activity.id, destination_id: params['activity']['destination_id'].to_i)
       render json: @activity, status: :created
     else
       render json: @activity.errors, status: :unprocessable_entity
@@ -21,7 +22,9 @@ class ActivitiesController < ApplicationController
 
   # PATCH/PUT /activities/1
   def update
+    @activity_destination = ActivityDestination.find_by_activity_id(@activity.id)
     if @activity.update(activity_params)
+      @activity_destination.update(destination_id: params['destination_id'])
       render json: @activity
     else
       render json: @activity.errors, status: :unprocessable_entity

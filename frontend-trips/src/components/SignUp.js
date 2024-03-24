@@ -111,6 +111,9 @@ const Signup = () => {
                     <button type="submit" className="btn btn-primary btn-block">
                       Signup
                     </button>
+                    <Link className=" ms-2 " to={"/login"}>
+                      or Login
+                    </Link>
                   </form>
                 </div>
               </div>

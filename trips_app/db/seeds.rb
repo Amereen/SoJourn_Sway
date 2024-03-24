@@ -18,7 +18,21 @@ Destination.create([
   { name: 'New York City', description: 'The Big Apple - bustling and diverse' },
   { name: 'Rome', description: 'Eternal city with ancient history' },
   { name: 'Sydney', description: 'Harbor city with iconic landmarks' },
-  { name: 'Cape Town', description: 'Beautiful coastal city with Table Mountain' }
+  { name: 'Cape Town', description: 'Beautiful coastal city with Table Mountain' },
+  { name: 'Lahore', description: 'Beautiful city with a lot of historical places' },
+  { name: 'Kashmir', description: 'Beautiful place with amazing scenic view and other activities' },
+  { name: 'London', description: 'Capital city of the United Kingdom with rich history' },
+  { name: 'Dubai', description: 'Global city and business hub in the Middle East' },
+  { name: 'Barcelona', description: 'Cosmopolitan city known for its art and architecture' },
+  { name: 'Bangkok', description: 'City of angels known for vibrant street life and temples' }
 ])
 
+
 puts "Destination records created successfully!"
+
+# Create admin user
+User.create(
+  username: 'admin',
+  email: 'admin@example.com',
+  password: 'admin@12345',
+)

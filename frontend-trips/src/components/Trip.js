@@ -13,6 +13,7 @@ import {
 } from "../services/trip";
 import { useGetActivitiesQuery } from "../services/activity";
 import { useGetDestinationsQuery } from "../services/destination";
+import ActivitiesDropDown from "./ActivitiesDropDown";
 const Trip = () => {
   const { data, loading, error, refetch } = useGetTripsQuery("");
   const activitiesData = useGetActivitiesQuery("");
@@ -74,6 +75,17 @@ const Trip = () => {
     }
   };
 
+  const dateFormat = () => {
+    const date = new Date();
+
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    let currentDate = `${year}-${month}-${day}`;
+    return currentDate
+  }
+
   return (
     <>
       <div className="container-fluid destination py-5">
@@ -82,7 +94,9 @@ const Trip = () => {
             <h5 className="section-title px-3">Trips</h5>
             <h1 className="mb-0">Popular Trips</h1>
           </div>
-          <div className="d-flex justify-content-end">
+
+          { localStorage.getItem('token') &&
+            <div className="d-flex justify-content-end">
             <Button
               className="  btn btn-primary   rounded-pill"
               color="primary"
@@ -93,6 +107,8 @@ const Trip = () => {
               </span>
             </Button>
           </div>
+          }
+
           <div className="tab-class text-center">
             <ul className="nav nav-pills d-inline-flex justify-content-center mb-5">
               <li className="nav-item">
@@ -229,7 +245,7 @@ const Trip = () => {
             value={TripForm.destination_id}
             type="select"
             onChange={(e) =>
-              setTripForm({ ...TripForm, [e.target.name]: e.target.value })
+              {setTripForm({ ...TripForm, [e.target.name]: e.target.value })}
             }
           >
             <option value={-1}>Chose Destination</option>
@@ -238,32 +254,18 @@ const Trip = () => {
             ))}
           </Input>
         </FormGroup>
-        <FormGroup>
-          <Label for="activity">Activity</Label>
-          <Input
-           required
-            id="activity"
-            name="activity_id"
-            value={TripForm.activity_id}
-            type="select"
-            onChange={(e) =>
-              setTripForm({ ...TripForm, [e.target.name]: e.target.value })
-            }
-          >
-            <option value={-1}>Chose Activity</option>
-            {activitiesData?.data?.map((activity) => (
-              <option value={activity.id}>{activity.name}</option>
-            ))}
-          </Input>
-        </FormGroup>
+        { TripForm.destination_id &&
+          <ActivitiesDropDown setTripForm={setTripForm} TripForm={TripForm} />
+        }
         <Row>
           <Col md={6}>
             <FormGroup>
               <Label for="startDate">Start Date</Label>
               <Input
+                required
+                min={dateFormat()}
                 id="startDate"
                 name="start_date"
-                placeholder="with a placeholder"
                 type="date"
                 value={TripForm.start_date}
                 onChange={(e) =>
@@ -276,10 +278,11 @@ const Trip = () => {
             <FormGroup>
               <Label for="endDate">End Date</Label>
               <Input
+                required
+                min={TripForm.start_date}
                 id="end_date"
                 name=""
                 value={TripForm.end_date}
-                placeholder=""
                 type="date"
                 onChange={(e) =>
                   setTripForm({ ...TripForm, [e.target.id]: e.target.value })

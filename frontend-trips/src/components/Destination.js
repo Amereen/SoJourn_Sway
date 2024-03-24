@@ -35,8 +35,7 @@ const Destination = () => {
         refetch();
       }
     } else {
-      const { data } = await // ? updateDestination(destinationForm)
-      createDestination({
+      const { data } = await createDestination({
         destination: { ...destinationForm },
       });
       if (data) {
@@ -64,19 +63,24 @@ const Destination = () => {
         <div className="container py-5">
           <div className="mx-auto text-center mb-5" style={{ maxWidth: 900 }}>
             <h5 className="section-title px-3">Destination</h5>
-            <h1 className="mb-0">Popular Destination</h1>
+            <h1 className="mb-0">Popular Destinations</h1>
           </div>
-          <div className="d-flex justify-content-end">
-            <Button
-              className="  btn btn-primary   rounded-pill"
-              color="primary"
-              onClick={() => setModal(true)}
-            >
-              <span className="text-white" style={{ width: 150 }}>
-                Add Destination
-              </span>
-            </Button>
-          </div>
+
+          {JSON.parse(localStorage.getItem("user"))?.email ===
+            "admin@example.com" && (
+            <div className="d-flex justify-content-end">
+              <Button
+                className="  btn btn-primary   rounded-pill"
+                color="primary"
+                onClick={() => setModal(true)}
+              >
+                <span className="text-white" style={{ width: 150 }}>
+                  Add Destination
+                </span>
+              </Button>
+            </div>
+          )}
+
           <div className="tab-class text-center">
             <ul className="nav nav-pills d-inline-flex justify-content-center mb-5">
               <li className="nav-item">
@@ -103,16 +107,19 @@ const Destination = () => {
                           alt=""
                         />
                         <div className="destination-overlay p-4">
-                          <Link
-                            onClick={() => {
-                              setDestinationForm({ ...destination });
-                              setModal(true);
-                              setIsEdit(true);
-                            }}
-                            className="btn btn-primary text-white rounded-pill border py-2 px-3"
-                          >
-                            Edit
-                          </Link>
+                          {JSON.parse(localStorage.getItem("user"))?.email ===
+                            "admin@example.com" && (
+                            <Link
+                              onClick={() => {
+                                setDestinationForm({ ...destination });
+                                setModal(true);
+                                setIsEdit(true);
+                              }}
+                              className="btn btn-primary text-white rounded-pill border py-2 px-3"
+                            >
+                              Edit
+                            </Link>
+                          )}
                           <h4 className="text-white mb-2 mt-3">
                             {destination.name}
                           </h4>
@@ -122,16 +129,19 @@ const Destination = () => {
                           </Link>
                         </div>
                         <div className="search-icon">
-                          <Link
-                            onClick={() => onTrashClick(destination.id)}
-                            data-lightbox="destination-1"
-                            className=""
-                          >
-                            <FaTrash
-                              style={{ width: "40px", height: "40px" }}
-                              className=" btn btn-white  text-danger"
-                            />
-                          </Link>
+                          {JSON.parse(localStorage.getItem("user"))?.email ===
+                            "admin@example.com" && (
+                            <Link
+                              onClick={() => onTrashClick(destination.id)}
+                              data-lightbox="destination-1"
+                              className=""
+                            >
+                              <FaTrash
+                                style={{ width: "40px", height: "40px" }}
+                                className=" btn btn-white  text-danger"
+                              />
+                            </Link>
+                          )}
                         </div>
                       </div>
                     </div>

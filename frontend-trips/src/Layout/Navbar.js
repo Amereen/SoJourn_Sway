@@ -10,7 +10,7 @@ const Navbar = () => {
           <Link className="navbar-brand p-0">
             <h1 className="m-0">
               <i className="fa fa-map-marker-alt me-3" />
-              SoJournSway
+              SoJourn Sway
             </h1>
           </Link>
           <button
@@ -43,7 +43,7 @@ const Navbar = () => {
       <div className="container-fluid bg-breadcrumb">
         <div className="container text-center py-5" style={{ maxWidth: 900 }}>
           <h3 className="text-white text-capitalize display-3 mb-4">
-            SoJournSway{"  "}
+            SoJourn Sway{"  "}
             {location.pathname === "/"
               ? "Destination"
               : location.pathname.split("/")[1]}

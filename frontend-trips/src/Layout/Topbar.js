@@ -32,7 +32,8 @@ const Topbar = () => {
                 </small>
               </Link>
             )}
-            <Dropdown isOpen={isOpen} toggle={() => setIsOpen(!isOpen)}>
+            { localStorage.getItem('token') &&
+              <Dropdown isOpen={isOpen} toggle={() => setIsOpen(!isOpen)}>
               <DropdownToggle data-toggle="dropdown" tag="span">
                 <Link className="dropdown-toggle text-light">
                   <small>
@@ -43,7 +44,7 @@ const Topbar = () => {
               <DropdownMenu>
                 <Link
                   onClick={() => {
-                    localStorage.removeItem("token");
+                    localStorage.clear();
                     navigate("/login");
                   }}
                   className="dropdown-item"
@@ -52,6 +53,7 @@ const Topbar = () => {
                 </Link>
               </DropdownMenu>
             </Dropdown>
+            }
           </div>
         </div>
       </div>

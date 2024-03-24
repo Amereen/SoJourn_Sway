@@ -34,7 +34,7 @@ export const activityApi = createApi({
         return {
           url: `/${userObj.id}`,
           method: "PUT",
-          body: { name: userObj.name, description: userObj.description },
+          body: { name: userObj.name, description: userObj.description, destination_id: userObj.destination_id },
           headers: {
             "Content-type": "application/json; charset=UTF-8",
             authorization: localStorage.getItem("token"),

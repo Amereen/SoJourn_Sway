@@ -9,6 +9,18 @@ export const destinationApi = createApi({
     getDestinations: builder.query({
       query: () => ``,
     }),
+    getActivitiesByDestinationId: builder.query({
+      query: (userObj) => {
+        debugger
+        return {
+          url: `/${userObj.id}/get_associated_activities`,
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            authorization: localStorage.getItem("token"),
+          },
+        };
+      },
+    }),
     createDestination: builder.mutation({
       query: (userObj) => {
         return {
@@ -55,6 +67,7 @@ export const destinationApi = createApi({
 // auto-generated based on the defined endpoints
 export const {
   useGetDestinationsQuery,
+  useGetActivitiesByDestinationIdQuery,
   useCreateDestinationMutation,
   useUpdateDestinationMutation,
   useDeleteDestinationMutation,
